@@ -27,7 +27,6 @@ struct ContentView: View {
                                 .stroke(Color.orange, lineWidth:2)
                                 .frame(width: 33, height: 33)
                         )
-
                 }
             }
             .ignoresSafeArea()
@@ -63,6 +62,7 @@ struct ContentView: View {
         } // end NavigationStack
         .sheet(isPresented: $showAddModal) {
             AddModalView()
+                .presentationDetents([.medium, .large])
         }
     }
     

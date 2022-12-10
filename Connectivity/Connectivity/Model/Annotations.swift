@@ -8,10 +8,10 @@
 import Foundation
 import MapKit
 
-enum Activity : String {
+enum Activity : String , CaseIterable{
     case sport = "figure.run"
     case drinkOrEat = "cup.and.saucer.fill"
-    case cltural = "theatermasks.fill"
+    case cltural = "book.fill"
     
 //    public static func caseToStr() -> String{
 //        switch self {
@@ -28,7 +28,7 @@ enum Activity : String {
 struct Annotation : Identifiable {
     let id = UUID()
     var place : String
-    var description : String
+    var details : String
     var activity : Activity
     var coordinate : CLLocationCoordinate2D
     var peopleNumber : Int = 1
