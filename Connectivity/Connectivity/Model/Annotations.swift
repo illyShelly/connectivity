@@ -11,7 +11,7 @@ import MapKit
 enum Activity : String , CaseIterable{
     case sport = "figure.run"
     case drinkOrEat = "cup.and.saucer.fill"
-    case cltural = "book.fill"
+    case cultural = "book.fill"
     
 //    public static func caseToStr() -> String{
 //        switch self {

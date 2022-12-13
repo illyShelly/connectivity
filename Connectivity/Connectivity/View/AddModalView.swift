@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct AddModalView: View {
     @Environment(\.dismiss) var dismiss
+    @ObservedObject var AnnotationVM = AnnotationViewModel()
     @State private var place = ""
-    @State private var detail = ""
-    @State private var selectedItem : Activity = Activity.sport
+    @State private var details = ""
+    @State private var selectedItem : Activity = .sport
     
     var body: some View {
         VStack(spacing: 33){
@@ -22,26 +24,48 @@ struct AddModalView: View {
                 .padding(.top)
             
             HStack(spacing: 33){
-                ForEach(Activity.allCases, id: \.rawValue) { activity in
+                ForEach(Activity.allCases, id: \.hashValue) { activity in
                     Button() {
                         selectedItem = activity
                     }label: {
-                        Image(systemName: "\(activity.rawValue)")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 30, height: 30)
-                            .overlay(
-                                    Circle()
-                                    .stroke(Color.orange, lineWidth:2)
-                                    .frame(width: 50, height: 50)
-                            )
+                        if (selectedItem == activity) {
+                            ZStack{
+                                Circle()
+                                .frame(width: 52, height: 52)
+
+                                Image(systemName: "\(activity.rawValue)")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .foregroundColor(.white)
+                                    .frame(width: 30, height: 30)
+                            }
+                            .padding(-5)
+                        }
+                        else {
+                            Image(systemName: "\(activity.rawValue)")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 30, height: 30)
+                                .overlay(
+                                        Circle()
+                                        .stroke(Color.orange, lineWidth:2)
+                                        .frame(width: 50, height: 50)
+                                )
+                                .padding(5)
+                        }
+                        
+
                     }
                 }
             }
             TextField("Place", text: $place)
-            TextField("Details", text: $detail)
+            TextField("Details", text: $details)
             Spacer()
             Button {
+                let newAnnotation = Annotation(place: place, details: details, activity: selectedItem, coordinate: CLLocationCoordinate2D(latitude: 40.8518, longitude: 14.2681))
+                
+                AnnotationVM.addAnnotation(newAnnotation: newAnnotation)
+                print(newAnnotation)
                 dismiss()
             } label: {
                 Text("Share Activity")

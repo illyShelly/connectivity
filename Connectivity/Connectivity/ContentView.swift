@@ -10,14 +10,16 @@ import MapKit
 
 struct ContentView: View {
     
-    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 40.8518, longitude: 14.2681), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
+    @ObservedObject var AnnotationVM = AnnotationViewModel()
+    
+    @State private var userPosition = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 40.8518, longitude: 14.2681), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
     
     @State private var showAddModal = false
     
     var body: some View {
         
         NavigationStack{
-            Map(coordinateRegion: $region, annotationItems: annotationList) { annotation in
+            Map(coordinateRegion: $userPosition, annotationItems: AnnotationVM.AnnotationDB) { annotation in
                 MapAnnotation(coordinate: annotation.coordinate) {
 
                     Image(systemName: "\(annotation.activity.rawValue)")
