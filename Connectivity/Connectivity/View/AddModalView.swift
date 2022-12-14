@@ -10,7 +10,7 @@ import CoreLocation
 
 struct AddModalView: View {
     @Environment(\.dismiss) var dismiss
-    @ObservedObject var AnnotationVM = AnnotationViewModel()
+    @ObservedObject var AnnotationVM : AnnotationViewModel
     @State private var place = ""
     @State private var details = ""
     @State private var selectedItem : Activity = .sport
@@ -63,9 +63,7 @@ struct AddModalView: View {
             Spacer()
             Button {
                 let newAnnotation = Annotation(place: place, details: details, activity: selectedItem, coordinate: CLLocationCoordinate2D(latitude: 40.8518, longitude: 14.2681))
-                
                 AnnotationVM.addAnnotation(newAnnotation: newAnnotation)
-                print(newAnnotation)
                 dismiss()
             } label: {
                 Text("Share Activity")
@@ -87,6 +85,6 @@ struct AddModalView: View {
 
 struct AddModalView_Previews: PreviewProvider {
     static var previews: some View {
-        AddModalView()
+        AddModalView(AnnotationVM : AnnotationViewModel())
     }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class AnnotationViewModel: ObservableObject {
+@MainActor class AnnotationViewModel: ObservableObject {
     // manage annotation data
     @Published var AnnotationDB = annotationList
     
@@ -16,3 +16,5 @@ class AnnotationViewModel: ObservableObject {
         AnnotationDB.append(newAnnotation)
     }
 }
+
+

@@ -10,7 +10,7 @@ import MapKit
 
 struct ContentView: View {
     
-    @ObservedObject var AnnotationVM = AnnotationViewModel()
+    @StateObject var AnnotationVM = AnnotationViewModel()
     
     @State private var userPosition = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 40.8518, longitude: 14.2681), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
     
@@ -21,14 +21,17 @@ struct ContentView: View {
         NavigationStack{
             Map(coordinateRegion: $userPosition, annotationItems: AnnotationVM.AnnotationDB) { annotation in
                 MapAnnotation(coordinate: annotation.coordinate) {
-
-                    Image(systemName: "\(annotation.activity.rawValue)")
+                    ZStack{
+                        Circle()
+                        .frame(width: 35, height: 35)
                         .foregroundColor(.orange)
-                        .overlay(
-                                Circle()
-                                .stroke(Color.orange, lineWidth:2)
-                                .frame(width: 33, height: 33)
-                        )
+
+                        Image(systemName: "\(annotation.activity.rawValue)")
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundColor(.white)
+                            .frame(width: 20, height: 20)
+                    }
                 }
             }
             .ignoresSafeArea()
@@ -42,7 +45,7 @@ struct ContentView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        // action
+                        // add action
                     } label: {
                         Label("Search activity", systemImage: "magnifyingglass.circle.fill")
                             .padding(.bottom)
@@ -63,7 +66,7 @@ struct ContentView: View {
                 
         } // end NavigationStack
         .sheet(isPresented: $showAddModal) {
-            AddModalView()
+            AddModalView(AnnotationVM: AnnotationVM)
                 .presentationDetents([.medium, .large])
         }
     }
